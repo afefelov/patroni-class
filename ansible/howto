@@ -69,16 +69,14 @@ ping master.patroni-class.service.consul
 exit
 
 # Let's disconnect current master
-docker network connect bridge h0
+docker network disconnect bridge h1
 
 # Failover works
-docker exec -it h1 docker exec -it pg-h1 patronictl -c /var/lib/postgresql/patroni.yml list
-
-# Turn on again and see fencing
-ansible-playbook -i dynamic_inventory.py consul.yml
 docker exec -it h0 docker exec -it pg-h0 patronictl -c /var/lib/postgresql/patroni.yml list
 
-#Let's change some config and see how it is updating
+# Turn on again and see fencing
+docker network connect bridge h1
+docker exec -it h0 docker exec -it pg-h0 patronictl -c /var/lib/postgresql/patroni.yml list
 
 #Let's init cluster from s3
 
