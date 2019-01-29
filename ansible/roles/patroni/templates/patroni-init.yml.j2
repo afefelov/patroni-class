@@ -1,0 +1,67 @@
+name: {{ patroni_node_name }}
+scope: &scope {{ patroni_scope }}
+
+watchdog:
+  mode: off
+
+consul:
+  host: "{{ ansible_host }}:8500"
+  register_service: true
+restapi:
+  listen: 0.0.0.0:8008
+  connect_address: "{{ ansible_host }}:8008"
+  auth: 'username:password'
+
+bootstrap:
+  dcs:
+    ttl: &ttl 30
+    loop_wait: &loop_wait 10
+    maximum_lag_on_failover: 1048576 # 1 megabyte in bytes
+    postgresql:
+      use_pg_rewind: true
+      use_slots: true
+      parameters:
+        archive_mode: "on"
+        wal_level: hot_standby
+        archive_command: "mkdir -p ../wal_archive && test ! -f ../wal_archive/%f && cp %p ../wal_archive/%f"
+        max_wal_senders: 10
+        wal_keep_segments: 8
+        archive_timeout: 1800s
+        max_replication_slots: 5
+        hot_standby: "on"
+        wal_log_hints: "on"
+
+initdb:
+  - encoding: UTF8
+  - data-checksums
+
+pg_hba:  # Add following lines to pg_hba.conf after running 'initdb'
+  - local all all trust
+  - host replication replicator 172.18.0.0/8 md5
+  - host replication replicator 127.0.0.1/32 trust
+  - host all all 0.0.0.0/0 md5
+
+postgresql:
+  pgpass: /var/lib/postgresql/.pgpass
+  listen: 0.0.0.0:5432
+  connect_address: "{{ ansible_host }}:5432"
+  data_dir: /var/lib/postgresql/data
+  pg_rewind:
+    username: postgres
+    password: password
+  pg_hba:
+    - local all all trust
+    - host replication replicator 172.18.0.0/24 md5
+    - host replication replicator 127.0.0.1/32 trust
+    - host all all 0.0.0.0/0 md5
+  replication:
+    username: replicator
+    password: password
+    network:  172.18.0.0
+  superuser:
+    username: postgres
+    password: password
+  admin:
+    username: admin
+    password: password
+  restore: /opt/patroni/patroni/scripts/restore.py

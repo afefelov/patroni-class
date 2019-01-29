@@ -1,0 +1,4 @@
+- include: init.yml
+  tags: [patroni-init]
+- include: walg-init.yml
+  tags: [patroni-walg-init]

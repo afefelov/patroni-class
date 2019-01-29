@@ -1,0 +1,56 @@
+# - name: mkdir for postgres
+#   file:
+#     path: "{{ postgres_root }}"
+#     state: directory
+#     owner: root
+#     group: root
+#     mode: 0755
+
+# - name: Deploy patroni.yml
+#   template:
+#     src: patroni.yml.j2
+#     dest: "{{ postgres_root }}/patroni.yml"
+
+
+# - name: Deploy afefelov/patroni-class-pg-9.6-walg
+#   docker_container:
+#     name: "{{ patroni_node_name }}"
+#     image: " afefelov/patroni-class-pg-9.6-walg"
+#     detach: true
+#     state: started
+#     restart: yes
+#     pull: yes
+#     dns_servers:
+#       - "{{ consul_dummy_ip }}"
+#     expose:
+#       - 5432
+#       - 8008
+#     env:
+#       AWS_ACCESS_KEY_ID: "{{ walg_aws_access_key_id }}"
+#       AWS_SECRET_ACCESS_KEY: "{{ walg_aws_secret_access_key }}"
+#       PGHOST: "{{ walg_pghost }}"
+#       PGPORT: "{{ walg_pgport }}"
+#       WALE_S3_PREFIX: "{{ walg_wale_s3_prefix }}"
+#       WALG_DOWNLOAD_CONCURRENCY: "{{ walg_walg_concurrency }}"
+#       LONDISTE_MODE: "{{ londiste_mode | default('disabled') }}"
+#       MASTER_DATABASE_NAME: "{{ londiste_database_name | default('unknown') }}"
+#       MASTER_NODE_NAME: "{{ londiste_node_name | default('unknown') }}"
+#       MASTER_IP: "{{ londiste_master_location | default('unknown') }}"
+#       MASTER_DATABASE_USER: "{{ londiste_user | default('unknown') }}"
+#       USE_PGQD: "{{ use_pgqd | default('1') }}"
+#       MASTER_DATABASE_PASSWORD: "{{ londiste_password | default('unknown') }}"
+#     ports:
+#         - "{{vswitch.axium_patroni_production.ip}}:5432:5432"
+#         - "{{vswitch.axium_patroni_production.ip}}:8008:8008"
+#     volumes:
+#         - "{{ postgres_root }}:/var/lib/postgresql"
+#         - "/srv/docker/filebeat/log/postgresql/{{ postgres_filebeat_mount | default('mastery-production') }}:/var/log/postgresql"
+#   when: patroni_node_name is defined
+
+# - name: fix /var/lib/postgresql permission
+#   command: "docker exec {{ patroni_node_name }} chown -R postgres:postgres /var/lib/postgresql"
+#   when: patroni_node_name is defined
+
+# - name: fix /var/log/postgresql permission
+#   command: "docker exec {{ patroni_node_name }} chown postgres:postgres /var/log/postgresql"
+#   when: patroni_node_name is defined

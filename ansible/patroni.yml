@@ -1,0 +1,11 @@
+---
+# file: patroni-class
+- hosts: all
+  become: yes
+  become_method: sudo
+  vars:
+    postgres_root: "/srv/postgres"
+    patroni_node_name: "pg-{{ ansible_dynamic_hostname }}"
+    patroni_scope: "patroni-class"
+  roles:
+    - { role: patroni, tags: [ 'patroni-init' ]}
