@@ -137,3 +137,8 @@ docker exec -it h2 docker logs --tail 100 pg-h2
 ```bash
 docker exec -it h2 docker exec -it pg-h2 gosu postgres psql -c "SELECT max(id) from walg3;"
 ```
+
+# Telegram group
+```
+Join if you have questions: https://t.me/joinchat/BjLKBU-Z1PU5j0-mvhWQCw
+```
