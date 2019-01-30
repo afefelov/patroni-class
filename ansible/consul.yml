@@ -16,14 +16,15 @@
     consul_recursors: ['8.8.8.8', '8.8.8.4']
     consul_manage_service: false
     consul_is_server: true
-    consul_join_at_start: true
+    consul_join_at_start: false
     consul_retry_join: true
     consul_datacenter: "dc"
     consul_bootstrap: false
+    consul_bootstrap_expect: 3
     consul_port_dns: 53
     consul_use_upstart: false
     consul_home: /srv/consul
     consul_config_file: /etc/consul.json
-    consul_bootstrap_expect: 3
+    consul_leave_on_terminate: false
   roles:
       - consul

@@ -7,5 +7,6 @@
     postgres_root: "/srv/postgres"
     patroni_node_name: "pg-{{ ansible_dynamic_hostname }}"
     patroni_scope: "patroni-class"
+    patroni_scope_walg: "patroni-class-walg"
   roles:
-    - { role: patroni, tags: [ 'patroni-init' ]}
+    - { role: patroni}

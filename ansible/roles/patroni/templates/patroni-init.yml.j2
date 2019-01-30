@@ -1,5 +1,5 @@
 name: {{ patroni_node_name }}
-scope: &scope {{ patroni_scope }}
+scope: {{ patroni_scope }}
 
 watchdog:
   mode: off
@@ -7,6 +7,7 @@ watchdog:
 consul:
   host: "{{ ansible_host }}:8500"
   register_service: true
+
 restapi:
   listen: 0.0.0.0:8008
   connect_address: "{{ ansible_host }}:8008"
@@ -14,8 +15,8 @@ restapi:
 
 bootstrap:
   dcs:
-    ttl: &ttl 30
-    loop_wait: &loop_wait 10
+    ttl: 30
+    loop_wait: 10
     maximum_lag_on_failover: 1048576 # 1 megabyte in bytes
     postgresql:
       use_pg_rewind: true
@@ -57,11 +58,9 @@ postgresql:
   replication:
     username: replicator
     password: password
-    network:  172.18.0.0
   superuser:
     username: postgres
     password: password
   admin:
     username: admin
     password: password
-  restore: /opt/patroni/patroni/scripts/restore.py
