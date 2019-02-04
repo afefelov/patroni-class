@@ -140,3 +140,13 @@ docker exec -it h2 docker exec -it pg-h2 gosu postgres psql -c "SELECT max(id) f
 
 # Telegram group
 Join if you have questions: https://t.me/joinchat/BjLKBU-Z1PU5j0-mvhWQCw
+
+
+# pg 11
+# Using afefelov/patroni-class-pg-9.6-walg:11
+```bash
+# pg11 master
+ansible-playbook -i dynamic_inventory.py patroni.yml --tags=patroni-init-pg11 --limit=172.18.0.4
+# pg11 slave
+ansible-playbook -i dynamic_inventory.py patroni.yml --tags=patroni-init-pg11 --limit=172.18.0.2
+```
