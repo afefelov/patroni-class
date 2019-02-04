@@ -139,6 +139,4 @@ docker exec -it h2 docker exec -it pg-h2 gosu postgres psql -c "SELECT max(id) f
 ```
 
 # Telegram group
-```
 Join if you have questions: https://t.me/joinchat/BjLKBU-Z1PU5j0-mvhWQCw
-```

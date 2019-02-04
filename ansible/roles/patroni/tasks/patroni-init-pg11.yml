@@ -6,15 +6,16 @@
     group: root
     mode: 0755
 
-- name: Deploy patroni-init-walg.yml.j2
+- name: Deploy patroni-init.yml.j2
   template:
-    src: patroni-init-walg.yml.j2
+    src: patroni-init.yml.j2
     dest: "{{ postgres_root }}/patroni.yml"
 
-- name: Deploy afefelov/patroni-class-pg-9.6-walg
+
+- name: Deploy afefelov/patroni-class-pg-9.6-walg:11
   docker_container:
     name: "{{ patroni_node_name }}"
-    image: "afefelov/patroni-class-pg-9.6-walg"
+    image: "afefelov/patroni-class-pg-9.6-walg:11"
     detach: true
     state: started
     restart: yes
@@ -22,10 +23,6 @@
     env:
       TERM: 'xterm'
       TZ: Europe/Moscow
-      AWS_ACCESS_KEY_ID: "AKIAITVOSC6XDEDFKCLA"
-      AWS_SECRET_ACCESS_KEY: "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"
-      PGPORT: 5432
-      WALE_S3_PREFIX: "s3://pgconf-patroni-class/backup"
     dns_servers:
       - "{{ ansible_host }}"
     expose:
@@ -37,6 +34,7 @@
         - "8008:8008"
     volumes:
         - "{{ postgres_root }}:/var/lib/postgresql"
+  when: patroni_node_name is defined
 
 - name: fix /var/lib/postgresql permission
   command: "docker exec {{ patroni_node_name }} chown -R postgres:postgres /var/lib/postgresql"
