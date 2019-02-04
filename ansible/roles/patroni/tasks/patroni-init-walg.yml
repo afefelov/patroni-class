@@ -22,8 +22,8 @@
     env:
       TERM: 'xterm'
       TZ: Europe/Moscow
-      AWS_ACCESS_KEY_ID: "AKIAITVOSC6XDEDFKCLA"
-      AWS_SECRET_ACCESS_KEY: "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"
+      AWS_ACCESS_KEY_ID: "=)"
+      AWS_SECRET_ACCESS_KEY: "=)"
       PGPORT: 5432
       WALE_S3_PREFIX: "s3://pgconf-patroni-class/backup"
     dns_servers:
