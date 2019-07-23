@@ -1,0 +1,8 @@
+all:
+  hosts:
+    patroni1:
+      ansible_host: 127.0.0.1
+    patroni2:
+      ansible_host: 127.0.0.2
+    patroni3:
+      ansible_host: 127.0.0.3
