@@ -19,6 +19,7 @@
     detach: true
     state: started
     restart: yes
+    restart_policy: unless-stopped
     pull: yes
     env:
       TERM: 'xterm'

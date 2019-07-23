@@ -1,0 +1,48 @@
+---
+- hosts: all
+
+  tasks:
+  
+  - name: Enable backports repo
+    apt_repository:
+      repo: deb http://deb.debian.org/debian stretch-backports main
+      state: present
+
+  - name: Update repositories cache and install some packages
+    apt:
+      name: "{{ packages }}"
+      update_cache: yes
+    vars:
+      packages:
+      - unzip
+      - python-pip
+      - curl
+  
+  - name: Deploy status.sh.j2
+    template:
+      src: status.sh.j2
+      dest: /root/status.sh
+  
+  - name: Deploy switchover.sh.j2
+    template:
+      src: switchover.sh.j2
+      dest: /root/switchover.sh
+
+  - name: Change permissions for status.sh
+    file:
+      path: /root/status.sh
+      mode: '0751'
+  
+  - name: Change permissions for switchover.sh
+    file:
+      path: /root/switchover.sh
+      mode: '0751'
+  
+- name: Include docker playbook
+  import_playbook: docker.yml
+
+- name: Include consul playbook
+  import_playbook: consul.yml
+
+- name: Include patroni playbook
+  import_playbook: patroni.yml

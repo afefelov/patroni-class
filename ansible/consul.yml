@@ -2,16 +2,14 @@
 
 - hosts: all
   vars:
-    consul_node_name: "{{ ansible_dynamic_hostname }}"
+    consul_node_name: "{{ ansible_hostname }}"
     consul_servers: "{{ groups['all'] }}"
     consul_http_address: "{{ ansible_host }}"
     consul_bind_address: "{{ ansible_host }}"
+    consul_dns_address: "{{ ansible_host }}"
     consul_client_address: "{{ ansible_host }}"
     consul_advertise_address: "{{ ansible_host }}"
-    consul_version: 1.2.2
-    consul_install_nginx: false
-    consul_install_nginx_config: false
-    consul_enable_nginx_config: false
+    consul_version: 1.5.1
     consul_dns_config: true
     consul_recursors: ['8.8.8.8', '8.8.8.4']
     consul_manage_service: false
@@ -22,9 +20,14 @@
     consul_bootstrap: false
     consul_bootstrap_expect: 3
     consul_port_dns: 53
-    consul_use_upstart: false
     consul_home: /srv/consul
     consul_config_file: /etc/consul.json
     consul_leave_on_terminate: false
+  tasks:
+  - name: Enable and restart consul
+    systemd:
+      name: consul
+      enabled: yes
+      state: restarted
   roles:
       - consul
