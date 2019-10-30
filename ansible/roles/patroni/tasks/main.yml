@@ -1,5 +1,3 @@
-- include: patroni-init-pg11.yml
-  tags: [patroni-init-pg11]
 - include: patroni-init.yml
   tags: [patroni-init]
 - include: patroni-init-walg.yml

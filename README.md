@@ -26,6 +26,7 @@ docker ps
 
 # Now use `dynamic_inventory.py` as inventory for consul deploy
 ```bash
+ansible-galaxy install --force -r /workshop/roles/consul/requirements.yml -p /workshop/roles/
 ansible-playbook -i dynamic_inventory.py consul.yml
 ```
 
@@ -36,9 +37,9 @@ docker logs h0
 
 # Let's perform simple init in postgres cluster
 ```bash
-./dynamic_inventory.py 
+./dynamic_inventory.py
 ```
-- *(use `less`)* 
+- *(use `less`)*
 - `h0` is `172.18.0.2`
 
 # Add one node into cluster with simple init
@@ -135,18 +136,8 @@ docker exec -it h2 docker logs --tail 100 pg-h2
 
 # Read data from walg master
 ```bash
-docker exec -it h2 docker exec -it pg-h2 gosu postgres psql -c "SELECT max(id) from walg3;"
+docker exec -it h2 docker exec -it pg-h2 gosu postgres psql -c "SELECT max(id) from walg;"
 ```
 
 # Telegram group
 Join if you have questions: https://t.me/joinchat/BjLKBU-Z1PU5j0-mvhWQCw
-
-
-# pg 11
-# Using afefelov/patroni-class-pg-9.6-walg:11
-```bash
-# pg11 master
-ansible-playbook -i dynamic_inventory.py patroni.yml --tags=patroni-init-pg11 --limit=172.18.0.4
-# pg11 slave
-ansible-playbook -i dynamic_inventory.py patroni.yml --tags=patroni-init-pg11 --limit=172.18.0.2
-```

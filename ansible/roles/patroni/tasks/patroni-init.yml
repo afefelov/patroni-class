@@ -12,17 +12,17 @@
     dest: "{{ postgres_root }}/patroni.yml"
 
 
-- name: Deploy afefelov/patroni-class-pg-9.6-walg
+- name: Deploy afefelov/patroni-class-pg-walg
   docker_container:
     name: "{{ patroni_node_name }}"
-    image: "afefelov/patroni-class-pg-9.6-walg"
+    image: "afefelov/patroni-class-pg-walg"
     detach: true
     state: started
     restart: yes
     pull: yes
     env:
       TERM: 'xterm'
-      TZ: Europe/Moscow
+      TZ: Asia/Yekaterinburg
     dns_servers:
       - "{{ ansible_host }}"
     expose:
