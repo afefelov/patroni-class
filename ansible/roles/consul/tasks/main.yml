@@ -1,0 +1,29 @@
+---
+
+- name: Add consul apt-key
+  shell: 'curl -fsSL https://apt.releases.hashicorp.com/gpg | apt-key add -'
+
+
+- name: Install consul
+  shell: 'apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main" && apt-get update && apt-get install consul'
+
+- name: Copy consul config
+  template:
+    src: consul.hcl.j2
+    dest: "/etc/consul.d/consul.hcl"
+
+- name: mkdir for consul run
+  file:
+    path: "/etc/service/consul"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Creating a consul runfile
+  copy:
+    dest: "/etc/service/consul/run"
+    mode: 0755
+    content: |
+      #!/bin/sh
+      /usr/bin/consul agent -config-file=/etc/consul.d/consul.hcl -dns-port=53
