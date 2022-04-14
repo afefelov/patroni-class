@@ -26,7 +26,6 @@ docker ps
 
 # Now use `dynamic_inventory.py` as inventory for consul deploy
 ```bash
-ansible-galaxy install --force -r /workshop/roles/consul/requirements.yml -p /workshop/roles/
 ansible-playbook -i dynamic_inventory.py consul.yml
 ```
 

@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python2
 #Author Jeganathan Swaminathan <jegan@tektutor.org> <http://www.tektutor.org>
 
 import subprocess
